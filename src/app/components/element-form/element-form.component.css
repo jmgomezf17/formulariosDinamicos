@@ -1,0 +1,41 @@
+.eraser {
+    color: #dc3545;
+    cursor: pointer;
+}
+
+.edit {
+    color: #28a745;
+    cursor: pointer;
+}
+
+.move {
+    cursor: pointer;
+}
+
+.lblRequired {
+    color: red;
+    font-weight: bold;
+}
+
+textarea {
+    resize: none;
+}
+
+fieldset {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 4px;
+}
+
+legend {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    padding: 3px 5px 3px 7px;
+    width: auto;
+}
+
+.addSource {
+    cursor: pointer;
+    color: #28a745;
+}

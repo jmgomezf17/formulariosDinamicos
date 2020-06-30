@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-10">
+        <i class="fa {{ elementModel.icon }} fa-2x"></i>
+        <span class=""> {{ elementModel.title }}</span>
+        <sup class="item-help" placement="top" ngbTooltip="{{elementModel.description}}">
+            <i class="fa fa-info-circle fa-1x ml-2"></i>
+        </sup>
+    </div>
+    <div class="col-2 text-center">
+        <button class="btn btn-success btn-sm" (click)="addElement()" placement="top" ngbTooltip="Agregar">
+            <i class="fa fa-angle-double-right fa-2x"></i>
+        </button>
+    </div>
+</div>
+<hr>

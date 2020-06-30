@@ -1,0 +1,143 @@
+<div class="row">
+    <div class="col-10 align-middle">
+
+        <ng-container [ngSwitch]="elementModel.type">
+
+            <div *ngSwitchCase="typeElements.LABEL">
+                <label class="col-form-label">{{ elementModel.title }}</label>
+            </div>
+
+            <div *ngSwitchCase="typeElements.TEXT">
+                <label class="col-form-label">{{elementModel.title}} <span class="lblRequired" *ngIf="elementModel.isRequired" placement="top" ngbTooltip="El campo es requerido">*</span></label>
+                <input type="text" class="form-control form-control-sm" disabled="disabled" placeholder="Digite la respuesta...">
+            </div>
+
+            <div *ngSwitchCase="typeElements.RADIOGROUP">
+                <label class="col-form-label">{{elementModel.title}} <span class="lblRequired" *ngIf="elementModel.isRequired" placement="top" ngbTooltip="El campo es requerido">*</span></label>
+                <div class="form-check" *ngFor="let item of elementModel.source">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" [value]="item.value" disabled>
+                    <label class="form-check-label" for="exampleRadios1">
+                      {{ item.name }}
+                    </label>
+                </div>
+            </div>
+
+            <div *ngSwitchCase="typeElements.CHECKGROUP">
+                <label class="col-form-label">{{elementModel.title}} <span class="lblRequired" *ngIf="elementModel.isRequired" placement="top" ngbTooltip="El campo es requerido">*</span></label>
+                <div class="form-check" *ngFor="let item of elementModel.source">
+                    <input class="form-check-input" type="checkbox" name="exampleRadios" id="exampleRadios1" [value]="item.value" disabled>
+                    <label class="form-check-label" for="exampleRadios1">
+                      {{ item.name }}
+                    </label>
+                </div>
+            </div>
+
+            <div *ngSwitchCase="typeElements.COMBOBOX">
+                <label class="col-form-label">{{elementModel.title}} <span class="lblRequired" *ngIf="elementModel.isRequired" placement="top" ngbTooltip="El campo es requerido">*</span></label>
+                <select class="form-control form-control-sm">
+                    <option>--Seleccione-</option>
+                    <ng-container class="row mt-1" *ngFor="let x of elementModel.source; let i = index;">
+                        <option [value]="this.elementModel.source[i].value">{{this.elementModel.source[i].name}}</option>
+                    </ng-container>
+                </select>
+            </div>
+
+            <div *ngSwitchCase="typeElements.TEXTAREA">
+                <label class="col-form-label">{{elementModel.title}} <span class="lblRequired" *ngIf="elementModel.isRequired" placement="top" ngbTooltip="El campo es requerido">*</span></label>
+                <textarea class="form-control form-control-sm" disabled="disabled" placeholder="Digite la respuesta..."></textarea>
+            </div>
+
+        </ng-container>
+
+    </div>
+    <div class="col-2 text-right">
+        <i class="fa fa-edit fa-1x pr-2 edit" placement="top" ngbTooltip="Editar" (click)="openEdit(editModal)"></i>
+        <i class="fa fa-ban fa-1x pr-2 eraser" placement="top" ngbTooltip="Eliminar" (click)="deleteElementForm()"></i>
+    </div>
+</div>
+
+<!-- Modal de configuracion de cada elemento -->
+<ng-template #editModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Configuración del Elemento</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+        <!-- Template type Label -->
+        <ng-template #typeLabel [ngIf]="elementModel.type == typeElements.LABEL">
+            <div class="form-group">
+                <label for="textLabel">Texto del label</label>
+                <input type="text" class="form-control form-control-sm" id="textLabel" [(ngModel)]="elementModel.title" autocomplete="off">
+            </div>
+        </ng-template>
+
+        <!-- Template type text -->
+        <ng-template #typeLabel [ngIf]="elementModel.type == typeElements.TEXT">
+            <div class="form-group">
+                <label for="titleText">Titulo</label>
+                <input type="text" class="form-control form-control-sm" id="titleText" [(ngModel)]="elementModel.title" autocomplete="off">
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="requiredText" [(ngModel)]="elementModel.isRequired">
+                <label class="form-check-label" for="requiredText">
+                    ¿Es requerido?
+                </label>
+            </div>
+        </ng-template>
+
+        <!-- Template type radioGroup or checkGroup or combobox -->
+        <ng-template #typeLabel [ngIf]="elementModel.type == typeElements.RADIOGROUP || elementModel.type == typeElements.CHECKGROUP || elementModel.type == typeElements.COMBOBOX">
+            <div class="form-group">
+                <label for="titleText">Titulo</label>
+                <input type="text" class="form-control form-control-sm" id="titleText" [(ngModel)]="elementModel.title" autocomplete="off">
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="requiredText" [(ngModel)]="elementModel.isRequired">
+                <label class="form-check-label" for="requiredText">
+                    ¿Es requerido?
+                </label>
+            </div>
+            <fieldset class="col-12 mt-3 pb-3">
+                <legend>Origen de datos <i class="fa fa-plus fa-1x ml-2 mr-2 addSource" placement="top" ngbTooltip="Agregar Source" (click)="addSource()"></i></legend>
+                <div class="row mt-1" *ngFor="let x of elementModel.source; let i = index;">
+                    <div class="col-7">
+                        <input type="text" class="form-control form-control-sm" placeholder="Texto" [(ngModel)]="this.elementModel.source[i].name">
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control form-control-sm" placeholder="Valor" [(ngModel)]="this.elementModel.source[i].value">
+                    </div>
+                    <div class="col-1">
+                        <i class="fa fa-ban fa-1x pr-2 eraser" placement="top" ngbTooltip="Eliminar" (click)="deleteSource(this.elementModel.source[i])"></i>
+                    </div>
+                </div>
+            </fieldset>
+        </ng-template>
+
+        <!-- Template type textArea -->
+        <ng-template #typeLabel [ngIf]="elementModel.type == typeElements.TEXTAREA">
+            <div class="form-group">
+                <label for="titleText">Titulo</label>
+                <input type="text" class="form-control form-control-sm" id="titleText" [(ngModel)]="elementModel.title" autocomplete="off">
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="requiredText" [(ngModel)]="elementModel.isRequired">
+                <label class="form-check-label" for="requiredText">
+                    ¿Es requerido?
+                </label>
+            </div>
+        </ng-template>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-sm" (click)="modal.close('Save click')">Aceptar</button>
+    </div>
+</ng-template>
+
+
+
+<!-- npm install --save @ng-bootstrap/ng-bootstrap -->
+<!-- ng add @angular/localize -->
+<!-- npm install moment --save -->
